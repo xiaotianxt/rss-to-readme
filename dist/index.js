@@ -32424,7 +32424,7 @@ async function run() {
             path: 'README.md'
         });
         const content = Buffer.from(data.content, 'base64').toString('utf8');
-        const newContent = content.replace(/\{FEED\}/, lines);
+        const newContent = content.replace(/<!-- start: feed -->[\s\S]*<!-- end: feed -->/, '<!-- start: feed -->\n' + lines + '\n<!-- end: feed -->');
         await octokit.request('PUT /repos/:owner/:repo/contents/:path', {
             owner,
             repo,
