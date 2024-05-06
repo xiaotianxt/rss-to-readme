@@ -32402,20 +32402,19 @@ async function run() {
         const num = Number(core.getInput('num')) || 5;
         const feed = await new rss_parser_1.default().parseURL(url);
         const token = core.getInput('github_token') || process.env.GITHUB_TOKEN;
-        console.log('HELLO');
         const request = await new Promise(r => __nccwpck_require__.e(/* import() */ 279).then(__nccwpck_require__.bind(__nccwpck_require__, 8279)));
         const orequest = request.defaults({
             headers: {
                 authorization: `token ${token}`
             }
         });
-        // const lines = feed.items
-        //   .slice(0, num)
-        //   .map(item => {
-        //     return '- [' + item.title + '](' + item.link + ')'
-        //   })
-        //   .join('\n')
-        // console.log(lines)
+        const lines = feed.items
+            .slice(0, num)
+            .map(item => {
+            return '- [' + item.title + '](' + item.link + ')';
+        })
+            .join('\n');
+        console.log(lines);
         // const owner = (process.env.GITHUB_REPOSITORY as string).split('/')[0]
         // const repo = (process.env.GITHUB_REPOSITORY as string).split('/')[1]
         // const { data } = await orequest('GET /repos/:owner/:repo/contents/:path', {
