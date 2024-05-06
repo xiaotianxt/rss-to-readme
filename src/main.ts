@@ -17,13 +17,14 @@ export async function run(): Promise<void> {
         authorization: `token ${token}`
       }
     })
-    const lines = feed.items
-      .slice(0, num)
-      .map(item => {
-        return '- [' + item.title + '](' + item.link + ')'
-      })
-      .join('\n')
-    console.log(lines)
+    console.log('HELLO')
+    // const lines = feed.items
+    //   .slice(0, num)
+    //   .map(item => {
+    //     return '- [' + item.title + '](' + item.link + ')'
+    //   })
+    //   .join('\n')
+    // console.log(lines)
 
     // const owner = (process.env.GITHUB_REPOSITORY as string).split('/')[0]
     // const repo = (process.env.GITHUB_REPOSITORY as string).split('/')[1]
