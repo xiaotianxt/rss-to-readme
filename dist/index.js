@@ -32402,7 +32402,7 @@ async function run() {
         const num = Number(core.getInput('num')) || 5;
         const feed = await new rss_parser_1.default().parseURL(url);
         const token = core.getInput('github_token') || process.env.GITHUB_TOKEN;
-        const request = await new Promise(r => r(__nccwpck_require__.e(/* import() */ 279).then(__nccwpck_require__.bind(__nccwpck_require__, 8279)).request));
+        const request = await new Promise(r => r(__nccwpck_require__.e(/* import() */ 279).then(__nccwpck_require__.bind(__nccwpck_require__, 8279))));
         const orequest = request.defaults({
             headers: {
                 authorization: `token ${token}`
