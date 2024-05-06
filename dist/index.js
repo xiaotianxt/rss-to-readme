@@ -32403,7 +32403,7 @@ async function run() {
         const feed = await new rss_parser_1.default().parseURL(url);
         const token = core.getInput('github_token') || process.env.GITHUB_TOKEN;
         const request = await new Promise(r => __nccwpck_require__.e(/* import() */ 279).then(__nccwpck_require__.bind(__nccwpck_require__, 8279)));
-        const orequest = request.defaults({
+        const orequest = request.default({
             headers: {
                 authorization: `token ${token}`
             }
