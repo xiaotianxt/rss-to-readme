@@ -44,6 +44,8 @@ export async function run(): Promise<void> {
       content: Buffer.from(newContent).toString('base64'),
       sha: data.sha
     })
+
+    console.log(content, newContent)
   } catch (error) {
     console.log(error)
     // Fail the workflow run if an error occurs
