@@ -32408,8 +32408,7 @@ async function run() {
             });
         });
         const octokit = new Octokit({
-            auth: token,
-            authStrategy: 'auto'
+            auth: token
         });
         const lines = feed.items
             .slice(0, num)
