@@ -40,9 +40,7 @@ export async function run(): Promise<void> {
     )
 
     const content = Buffer.from(data.content, 'base64').toString('utf8')
-    console.log(content)
     const newContent = content.replace(/\{FEED\}/, lines)
-    console.log(newContent)
 
     await octokit.request('PUT /repos/:owner/:repo/contents/:path', {
       owner,
@@ -52,8 +50,6 @@ export async function run(): Promise<void> {
       content: Buffer.from(newContent).toString('base64'),
       sha: data.sha
     })
-
-    console.log(content, newContent)
   } catch (error) {
     console.log(error)
     // Fail the workflow run if an error occurs

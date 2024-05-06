@@ -32424,9 +32424,7 @@ async function run() {
             path: 'README.md'
         });
         const content = Buffer.from(data.content, 'base64').toString('utf8');
-        console.log(content);
         const newContent = content.replace(/\{FEED\}/, lines);
-        console.log(newContent);
         await octokit.request('PUT /repos/:owner/:repo/contents/:path', {
             owner,
             repo,
@@ -32435,7 +32433,6 @@ async function run() {
             content: Buffer.from(newContent).toString('base64'),
             sha: data.sha
         });
-        console.log(content, newContent);
     }
     catch (error) {
         console.log(error);
