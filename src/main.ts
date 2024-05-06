@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import Parser from 'rss-parser'
+
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -10,13 +11,14 @@ export async function run(): Promise<void> {
     const num = Number(core.getInput('num')) || 5
     const feed = await new Parser().parseURL(url)
     const token = process.env.GITHUB_TOKEN as string
-    const request = await new Promise<any>(async r =>
-      r((await import('@octokit/request')).request)
-    )
-    const orequest = request.defaults({
-      headers: {
-        authorization: `token ${token}`
-      }
+    const Octokit = await new Promise<any>(resolve => {
+      import('@octokit/core').then(({ Octokit }) => {
+        resolve(Octokit)
+      })
+    })
+
+    const octokit = new Octokit({
+      auth: token
     })
     const lines = feed.items
       .slice(0, num)
@@ -28,18 +30,21 @@ export async function run(): Promise<void> {
     const owner = (process.env.GITHUB_REPOSITORY as string).split('/')[0]
     const repo = (process.env.GITHUB_REPOSITORY as string).split('/')[1]
 
-    const { data } = await orequest('GET /repos/:owner/:repo/contents/:path', {
-      owner,
-      repo,
-      path: 'README.md'
-    })
+    const { data } = await octokit.request(
+      'GET /repos/:owner/:repo/contents/:path',
+      {
+        owner,
+        repo,
+        path: 'README.md'
+      }
+    )
 
     const content = Buffer.from(data.content, 'base64').toString('utf8')
     console.log(content)
     const newContent = content.replace(/\{FEED\}/, lines)
     console.log(newContent)
 
-    await orequest('PUT /repos/:owner/:repo/contents/:path', {
+    await octokit.request('PUT /repos/:owner/:repo/contents/:path', {
       owner,
       repo,
       path: 'README.md',
