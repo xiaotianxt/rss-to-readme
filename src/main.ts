@@ -23,6 +23,7 @@ export async function run(): Promise<void> {
         return '- [' + item.title + '](' + item.link + ')'
       })
       .join('\n')
+    console.log(lines)
 
     const owner = (process.env.GITHUB_REPOSITORY as string).split('/')[0]
     const repo = (process.env.GITHUB_REPOSITORY as string).split('/')[1]
@@ -34,7 +35,9 @@ export async function run(): Promise<void> {
     })
 
     const content = Buffer.from(data.content, 'base64').toString('utf8')
+    console.log(content)
     const newContent = content.replace(/\{FEED\}/, lines)
+    console.log(newContent)
 
     await orequest('PUT /repos/:owner/:repo/contents/:path', {
       owner,

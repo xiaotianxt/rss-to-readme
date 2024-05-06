@@ -32414,6 +32414,7 @@ async function run() {
             return '- [' + item.title + '](' + item.link + ')';
         })
             .join('\n');
+        console.log(lines);
         const owner = process.env.GITHUB_REPOSITORY.split('/')[0];
         const repo = process.env.GITHUB_REPOSITORY.split('/')[1];
         const { data } = await orequest('GET /repos/:owner/:repo/contents/:path', {
@@ -32422,7 +32423,9 @@ async function run() {
             path: 'README.md'
         });
         const content = Buffer.from(data.content, 'base64').toString('utf8');
+        console.log(content);
         const newContent = content.replace(/\{FEED\}/, lines);
+        console.log(newContent);
         await orequest('PUT /repos/:owner/:repo/contents/:path', {
             owner,
             repo,
