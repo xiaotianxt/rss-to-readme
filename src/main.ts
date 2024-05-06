@@ -11,8 +11,10 @@ export async function run(): Promise<void> {
     const feed = await new Parser().parseURL(url)
     const token =
       core.getInput('github_token') || (process.env.GITHUB_TOKEN as string)
-    const request = await new Promise<any>(r => import('@octokit/request'))
-    const orequest = request.default({
+    const request = await new Promise<any>(r =>
+      r((import('@octokit/request') as any).request)
+    )
+    const orequest = request.defaults({
       headers: {
         authorization: `token ${token}`
       }
