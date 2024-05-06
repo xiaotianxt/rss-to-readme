@@ -12,11 +12,9 @@ inputs:
   feed-url:
     description: 'RSS feed URL'
     required: true
-
-# Define your outputs here.
-outputs:
-  feed:
-    description: 'Feed'
+  token:
+    description: 'GitHub token'
+    required: true
 
 runs:
   using: node20
