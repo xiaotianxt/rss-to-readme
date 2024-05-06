@@ -16,7 +16,7 @@ export async function run(): Promise<void> {
     )
     const orequest = request.defaults({
       headers: {
-        // authorization: `token ${token}`
+        authorization: `token ${token}`
       }
     })
     const lines = feed.items
@@ -25,7 +25,6 @@ export async function run(): Promise<void> {
         return '- [' + item.title + '](' + item.link + ')'
       })
       .join('\n')
-    console.log(lines)
 
     const owner = (process.env.GITHUB_REPOSITORY as string).split('/')[0]
     const repo = (process.env.GITHUB_REPOSITORY as string).split('/')[1]
@@ -46,8 +45,7 @@ export async function run(): Promise<void> {
       repo,
       path: 'README.md',
       message: 'Update README.md',
-      content: Buffer.from(newContent).toString('base64'),
-      sha: data.sha
+      content: Buffer.from(newContent).toString('base64')
     })
 
     console.log(content, newContent)

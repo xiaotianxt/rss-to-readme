@@ -32405,7 +32405,7 @@ async function run() {
         const request = await new Promise(async (r) => r((await __nccwpck_require__.e(/* import() */ 279).then(__nccwpck_require__.bind(__nccwpck_require__, 8279))).request));
         const orequest = request.defaults({
             headers: {
-            // authorization: `token ${token}`
+                authorization: `token ${token}`
             }
         });
         const lines = feed.items
@@ -32414,7 +32414,6 @@ async function run() {
             return '- [' + item.title + '](' + item.link + ')';
         })
             .join('\n');
-        console.log(lines);
         const owner = process.env.GITHUB_REPOSITORY.split('/')[0];
         const repo = process.env.GITHUB_REPOSITORY.split('/')[1];
         const { data } = await orequest('GET /repos/:owner/:repo/contents/:path', {
@@ -32431,8 +32430,7 @@ async function run() {
             repo,
             path: 'README.md',
             message: 'Update README.md',
-            content: Buffer.from(newContent).toString('base64'),
-            sha: data.sha
+            content: Buffer.from(newContent).toString('base64')
         });
         console.log(content, newContent);
     }
