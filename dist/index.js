@@ -32401,14 +32401,15 @@ async function run() {
         const url = core.getInput('feed-url', { required: true });
         const num = Number(core.getInput('num')) || 5;
         const feed = await new rss_parser_1.default().parseURL(url);
-        const token = process.env.GITHUB_TOKEN;
+        const token = core.getInput('token', { required: true });
         const Octokit = await new Promise(resolve => {
             __nccwpck_require__.e(/* import() */ 570).then(__nccwpck_require__.bind(__nccwpck_require__, 8570)).then(({ Octokit }) => {
                 resolve(Octokit);
             });
         });
         const octokit = new Octokit({
-            auth: token
+            auth: token,
+            authStrategy: 'auto'
         });
         const lines = feed.items
             .slice(0, num)

@@ -10,7 +10,7 @@ export async function run(): Promise<void> {
     const url = core.getInput('feed-url', { required: true })
     const num = Number(core.getInput('num')) || 5
     const feed = await new Parser().parseURL(url)
-    const token = process.env.GITHUB_TOKEN as string
+    const token = core.getInput('token', { required: true })
     const Octokit = await new Promise<any>(resolve => {
       import('@octokit/core').then(({ Octokit }) => {
         resolve(Octokit)
@@ -18,7 +18,8 @@ export async function run(): Promise<void> {
     })
 
     const octokit = new Octokit({
-      auth: token
+      auth: token,
+      authStrategy: 'auto'
     })
     const lines = feed.items
       .slice(0, num)
