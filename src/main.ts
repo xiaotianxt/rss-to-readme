@@ -6,12 +6,13 @@ import Parser from 'rss-parser'
  */
 export async function run(): Promise<void> {
   try {
-    const request = await new Promise<any>(r => import('@octokit/request'))
     const url = core.getInput('feed-url', { required: true })
     const num = Number(core.getInput('num')) || 5
     const feed = await new Parser().parseURL(url)
     const token =
       core.getInput('github_token') || (process.env.GITHUB_TOKEN as string)
+    console.log('HELLO')
+    const request = await new Promise<any>(r => import('@octokit/request'))
     const orequest = request.defaults({
       headers: {
         authorization: `token ${token}`
