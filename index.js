@@ -10,6 +10,10 @@ try {
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
   console.log(`The event payload: ${payload}`);
+
+  const res = await fetch("https://xiaotian.dev/index.xml");
+  const text = await res.text();
+  console.log(text);
 } catch (error) {
   core.setFailed(error.message);
 }
