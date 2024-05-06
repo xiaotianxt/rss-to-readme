@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: Hello world action step
         id: hello
-        uses: xiaotianxt/rss-to-readme@v1.1
+        uses: xiaotianxt/rss-to-readme@latest
         with:
           who-to-greet: 'Mona the Octocat'
       # Use the output from the `hello` step
