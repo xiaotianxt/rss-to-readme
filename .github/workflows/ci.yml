@@ -54,6 +54,7 @@ jobs:
         uses: ./
         with:
           feed-url: 'https://xiaotian.dev/index.xml'
+          token: ${{ secrets.token }}
 
       - name: Print Output
         id: output
