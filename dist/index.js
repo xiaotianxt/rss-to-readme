@@ -32408,34 +32408,33 @@ async function run() {
                 authorization: `token ${token}`
             }
         });
-        console.log('HELLO');
-        // const lines = feed.items
-        //   .slice(0, num)
-        //   .map(item => {
-        //     return '- [' + item.title + '](' + item.link + ')'
-        //   })
-        //   .join('\n')
-        // console.log(lines)
-        // const owner = (process.env.GITHUB_REPOSITORY as string).split('/')[0]
-        // const repo = (process.env.GITHUB_REPOSITORY as string).split('/')[1]
-        // const { data } = await orequest('GET /repos/:owner/:repo/contents/:path', {
-        //   owner,
-        //   repo,
-        //   path: 'README.md'
-        // })
-        // const content = Buffer.from(data.content, 'base64').toString('utf8')
-        // console.log(content)
-        // const newContent = content.replace(/\{FEED\}/, lines)
-        // console.log(newContent)
-        // await orequest('PUT /repos/:owner/:repo/contents/:path', {
-        //   owner,
-        //   repo,
-        //   path: 'README.md',
-        //   message: 'Update README.md',
-        //   content: Buffer.from(newContent).toString('base64'),
-        //   sha: data.sha
-        // })
-        // console.log(content, newContent)
+        const lines = feed.items
+            .slice(0, num)
+            .map(item => {
+            return '- [' + item.title + '](' + item.link + ')';
+        })
+            .join('\n');
+        console.log(lines);
+        const owner = process.env.GITHUB_REPOSITORY.split('/')[0];
+        const repo = process.env.GITHUB_REPOSITORY.split('/')[1];
+        const { data } = await orequest('GET /repos/:owner/:repo/contents/:path', {
+            owner,
+            repo,
+            path: 'README.md'
+        });
+        const content = Buffer.from(data.content, 'base64').toString('utf8');
+        console.log(content);
+        const newContent = content.replace(/\{FEED\}/, lines);
+        console.log(newContent);
+        await orequest('PUT /repos/:owner/:repo/contents/:path', {
+            owner,
+            repo,
+            path: 'README.md',
+            message: 'Update README.md',
+            content: Buffer.from(newContent).toString('base64'),
+            sha: data.sha
+        });
+        console.log(content, newContent);
     }
     catch (error) {
         console.log(error);
