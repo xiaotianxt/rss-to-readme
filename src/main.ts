@@ -16,7 +16,7 @@ export async function run(): Promise<void> {
     )
     const orequest = request.defaults({
       headers: {
-        authorization: `token ${token}`
+        // authorization: `token ${token}`
       }
     })
     const lines = feed.items
