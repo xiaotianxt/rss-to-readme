@@ -9,7 +9,7 @@ export async function run(): Promise<void> {
     const url = core.getInput('feed-url', { required: true })
     const num = Number(core.getInput('num')) || 5
     const feed = await new Parser().parseURL(url)
-    const token = core.getInput('token') || (process.env.GITHUB_TOKEN as string)
+    const token = process.env.GITHUB_TOKEN as string
     const request = await new Promise<any>(async r =>
       r((await import('@octokit/request')).request)
     )
