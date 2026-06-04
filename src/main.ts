@@ -1,4 +1,3 @@
-import * as core from '@actions/core'
 import Parser from 'rss-parser'
 
 /**
@@ -6,16 +5,14 @@ import Parser from 'rss-parser'
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 export async function run(): Promise<void> {
+  const core = await import('@actions/core')
+
   try {
     const url = core.getInput('feed-url', { required: true })
     const num = Number(core.getInput('num')) || 5
     const feed = await new Parser().parseURL(url)
     const token = core.getInput('token', { required: true })
-    const Octokit = await new Promise<any>(resolve => {
-      import('@octokit/core').then(({ Octokit }) => {
-        resolve(Octokit)
-      })
-    })
+    const { Octokit } = await import('@octokit/core')
 
     const octokit = new Octokit({
       auth: token
@@ -23,12 +20,11 @@ export async function run(): Promise<void> {
     const lines = feed.items
       .slice(0, num)
       .map(item => {
-        return '- [' + item.title + '](' + item.link + ')'
+        return `- [${item.title}](${item.link})`
       })
       .join('\n')
 
-    const owner = (process.env.GITHUB_REPOSITORY as string).split('/')[0]
-    const repo = (process.env.GITHUB_REPOSITORY as string).split('/')[1]
+    const [owner, repo] = (process.env.GITHUB_REPOSITORY as string).split('/')
 
     const { data } = await octokit.request(
       'GET /repos/:owner/:repo/contents/:path',
@@ -42,7 +38,7 @@ export async function run(): Promise<void> {
     const content = Buffer.from(data.content, 'base64').toString('utf8')
     const newContent = content.replace(
       /<!-- start: feed -->[\s\S]*<!-- end: feed -->/,
-      '<!-- start: feed -->\n' + lines + '\n<!-- end: feed -->'
+      `<!-- start: feed -->\n${lines}\n<!-- end: feed -->`
     )
 
     await octokit.request('PUT /repos/:owner/:repo/contents/:path', {

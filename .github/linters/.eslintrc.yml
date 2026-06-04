@@ -21,6 +21,13 @@ parserOptions:
     - './.github/linters/tsconfig.json'
     - './tsconfig.json'
 
+settings:
+  import/resolver:
+    typescript:
+      project:
+        - './.github/linters/tsconfig.json'
+        - './tsconfig.json'
+
 plugins:
   - '@typescript-eslint'
 
